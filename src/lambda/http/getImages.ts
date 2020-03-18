@@ -12,7 +12,8 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     console.log("Processing Event: ", event);
     const groupId = event.pathParameters.groupId
 
-    const validGroupId = groupExists(groupId);
+    const validGroupId = await groupExists(groupId);
+    console.log("Valid? ", validGroupId);
 
     if (!validGroupId) {
         return {
