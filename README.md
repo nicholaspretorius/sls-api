@@ -28,4 +28,4 @@ If you get a permissions error when you run deploy you may need to specify the u
 
 Default region is "us-east-1".
 
-URL: https://904lavdpr6.execute-api.us-east-1.amazonaws.com/dev/hello
+URL: https://904lavdpr6.execute-api.us-east-1.amazonaws.com/dev/groups
