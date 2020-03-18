@@ -16,27 +16,26 @@ plugins:
 provider:
   name: aws
   runtime: nodejs12.x
-
   stage: ${opt:stage, 'dev'}
-  region: ${option:region, 'us-east-1'}
+  region: ${opt:region, 'us-east-1'}
 
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     GROUPS_TABLE: Groups-${self:provider.stage}
-  
+
   iamRoleStatements:
     - Effect: Allow
       Action:
         - dynamodb:Scan
-      Resource: arn:aws:dynamodb:${self.provider.region}:*:table/${self.provider.environment.GROUPS_TABLE}
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GROUPS_TABLE}
 
 functions:
   GetGroups:
     handler: src/lambda/http/getGroups.handler
     events:
-      - http
+      - http:
           method: get
           path: groups
           cors: true
@@ -50,7 +49,7 @@ functions:
 resources:
   Resources:
     GroupsDynamoDBTable:
-      Type: AWS::DynamoDB::Table 
+      Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
           - AttributeName: id
