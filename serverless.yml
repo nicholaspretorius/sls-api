@@ -45,6 +45,9 @@ functions:
     events:
       - http:
           method: post
+          request:
+            schema:
+              application/json: ${file(models/createGroup.json)}
           path: groups
           cors: true
 
