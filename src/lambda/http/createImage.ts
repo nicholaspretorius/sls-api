@@ -48,7 +48,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
             "Access-Control-Allow-Origin": "*",
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ newImage })
+        body: JSON.stringify({ image: newImage })
     }
 }
 

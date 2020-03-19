@@ -58,11 +58,11 @@ functions:
     events:
       - http:
           method: post
+          path: groups
+          cors: true
           request:
             schema:
               application/json: ${file(models/createGroup.json)}
-          path: groups
-          cors: true
   GetImages:
     handler: src/lambda/http/getImages.handler
     events:
@@ -82,11 +82,11 @@ functions:
     events:
       - http:
           method: post
+          path: groups/{groupId}/images
+          cors: true
           request:
             schema:
               application/json: ${file(models/createImage.json)}
-              path: groups/{groupId}/image
-              cors: true
   # hello:
   #   handler: handler.hello
   #   events:
