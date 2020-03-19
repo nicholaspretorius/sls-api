@@ -53,11 +53,11 @@ provider:
         - s3:GetObject
       Resource: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*
     - Effect: Allow
-    Action:
-      - dynamodb:Scan
-      - dynamodb:PutItem
-      - dynamodb:DeleteItem
-    Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CONNECTIONS_TABLE}
+      Action:
+        - dynamodb:Scan
+        - dynamodb:PutItem
+        - dynamodb:DeleteItem
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CONNECTIONS_TABLE}
 
 functions:
   GetGroups:
@@ -102,7 +102,7 @@ functions:
             schema:
               application/json: ${file(models/createImage.json)}
   SendUploadNotifications:
-    handler: src/;ambda/s3/sendNotifications.handler
+    handler: src/lambda/s3/sendNotifications.handler
     # will not connect to event, this is done manually for s3 due to bug in Serverless
   ConnectHandler:
     handler: src/lambda/websocket/connect.handler
