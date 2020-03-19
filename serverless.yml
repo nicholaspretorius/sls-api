@@ -37,10 +37,12 @@ provider:
     - Effect: Allow
       Action:
         - dynamodb:Query
+        - dynamodb:PutItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.IMAGES_TABLE}
     - Effect: Allow
       Action:
         - dynamodb:Query
+        - dynamodb:PutItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.IMAGES_TABLE}/index/${self:provider.environment.IMAGE_ID_INDEX}
 
 functions:
@@ -75,6 +77,16 @@ functions:
           method: get
           path: /images/{imageId}
           cors: true
+  CreateImage:
+    handler: src/lambda/http/createImage.handler
+    events:
+      - http:
+          method: post
+          request:
+            schema:
+              application/json: ${file(models/createImage.json)}
+              path: groups/{groupId}/image
+              cors: true
   # hello:
   #   handler: handler.hello
   #   events:
