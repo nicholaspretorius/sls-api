@@ -105,7 +105,7 @@ functions:
     environment:
       STAGE: ${self:provider.stage}
       API_ID:
-        Ref: WebSocketsApi
+        Ref: WebsocketsApi
     handler: src/lambda/s3/sendNotifications.handler
     # will not connect to event, this is done manually for s3 due to bug in Serverless
   ConnectHandler:
