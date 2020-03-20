@@ -39,3 +39,16 @@ Use wscat (WebSocket Cat) to connect to WebSocket:
 Connect: 
 
 * `wscat -c wss://xyz12345.execute-api.us-east-1.amazonaws.com/dev` (Ctrl + C to disconnect)
+
+#### Image Upload
+
+The technical process for uploading an images is as follows: 
+
+1. Post the details of the images: 
+    * ```curl --location --request POST 'https://904lavdpr6.execute-api.us-east-1.amazonaws.com/dev/groups/1/images' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"title": "Another image"
+}'```
+2. Make a PUT request to the resulting URL with a binary file (image), on success you will get a 200 response. 
+3. Visit the URL returned from the initial POST response to view the image. 
