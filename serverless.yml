@@ -117,8 +117,8 @@ functions:
               - - arn:aws:sns
                 - Ref: AWS::Region
                 - Ref: AWS::AccountId
-                - ${self:custom:topicName}
-
+                - ${self:custom.topicName}
+          topicName: ${self:custom.topicName}
   SendUploadNotifications:
     environment:
       STAGE: ${self:provider.stage}
@@ -134,8 +134,8 @@ functions:
               - - arn:aws:sns
                 - Ref: AWS::Region
                 - Ref: AWS::AccountId
-                - ${self:custom:topicName}
-          topicName: ${self:custom:topicName}
+                - ${self:custom.topicName}
+          topicName: ${self:custom.topicName}
   ConnectHandler:
     handler: src/lambda/websocket/connect.handler
     events:
@@ -259,6 +259,10 @@ resources:
                 AWS: "*"
               Action: "es:*"
               Resource: "*"
+    ThumbnailsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.THUMBNAILS_S3_BUCKET}
     ImagesTopic:
       Type: AWS::SNS::Topic
       Properties:
