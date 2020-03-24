@@ -1,22 +1,24 @@
-import { CustomAuthorizerHandler, CustomAuthorizerEvent, CustomAuthorizerResult } from 'aws-lambda';
+import { CustomAuthorizerEvent, CustomAuthorizerResult } from 'aws-lambda';
 import "source-map-support";
-import * as AWS from "aws-sdk";
 import { verify } from "jsonwebtoken";
 import { JwtToken } from "./../../auth/JwtToken";
+
+import * as middy from "middy";
+import { secretsManager } from "middy/middlewares";
 
 const secretId = process.env.AUTH0_SECRET_ID;
 const secretField = process.env.AUTH0_SECRET_FIELD;
 
-const client = new AWS.SecretsManager();
+// const client = new AWS.SecretsManager();
 
-// cache secret if a lambda instance is re-used
-let cachedSecret: string
+// // cache secret if a lambda instance is re-used
+// let cachedSecret: string
 
-export const handler: CustomAuthorizerHandler = async (event: CustomAuthorizerEvent): Promise<CustomAuthorizerResult> => {
+export const handler = middy(async (event: CustomAuthorizerEvent, context): Promise<CustomAuthorizerResult> => {
     console.log("Processing Event: ", event);
 
     try {
-        const decodedToken = await verifyToken(event.authorizationToken);
+        const decodedToken = verifyToken(event.authorizationToken, context.AUTH0_SECRET[secretField]);
         console.log("User was authenticated...");
 
         return {
@@ -49,9 +51,9 @@ export const handler: CustomAuthorizerHandler = async (event: CustomAuthorizerEv
             }
         }
     }
-}
+});
 
-async function verifyToken(authHeader: string): Promise<JwtToken> {
+function verifyToken(authHeader: string, secret: string): JwtToken {
     if (!authHeader) {
         throw new Error("No authorization header");
     }
@@ -63,21 +65,33 @@ async function verifyToken(authHeader: string): Promise<JwtToken> {
     const split = authHeader.split(" ");
     const token = split[1];
 
-    const secretObj: any = await getSecret();
-    const secret = secretObj[secretField];
+    // const secretObj: any = await getSecret();
+    // const secret = secretObj[secretField];
 
     // auth will happen here
     return verify(token, secret) as JwtToken;
 }
 
-async function getSecret() {
-    if (cachedSecret) return cachedSecret;
+handler.use(
+    secretsManager({
+        cache: true,
+        cacheExpiryInMillis: 60000,
+        throwOnFailedCall: true,
+        secrets: {
+            AUTH0_SECRET: secretId
+        }
+    })
+);
 
-    const data = await client.getSecretValue({
-        SecretId: secretId
-    }).promise();
+// replace by using middy secretsManager
+// async function getSecret() {
+//     if (cachedSecret) return cachedSecret;
 
-    cachedSecret = data.SecretString;
+//     const data = await client.getSecretValue({
+//         SecretId: secretId
+//     }).promise();
 
-    return JSON.parse(cachedSecret);
-}
+//     cachedSecret = data.SecretString;
+
+//     return JSON.parse(cachedSecret);
+// }
