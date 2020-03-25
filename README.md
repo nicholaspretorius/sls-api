@@ -24,6 +24,12 @@ If you get a permissions error when you run deploy you may need to specify the u
 
 * `sls deploy -v --aws-profile serverless-user`
 
+Environments: 
+
+* `sls deploy -v --stage ci`
+* `sls deploy -v --stage staging`
+* `sls deploy -v --stage prod`
+
 ### AWS
 
 Default region is "us-east-1".
@@ -52,3 +58,21 @@ The technical process for uploading an images is as follows:
 }'```
 2. Make a PUT request to the resulting URL with a binary file (image), on success you will get a 200 response. 
 3. Visit the URL returned from the initial POST response to view the image. 
+
+
+### Local/Offline Execution
+
+* `npm i` - check package.json for dependencies first
+
+* Install DynamoDB Local:
+
+`sls dynamodb install`
+
+* Start the local DynamoDB server: 
+    
+`sls dynamodb start` 
+
+* Run Serverless Offline: 
+
+`sls offline`
+
