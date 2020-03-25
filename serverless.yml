@@ -26,6 +26,9 @@ custom:
       inMemory: true
       migrate: true
 
+package:
+  individually: true
+
 provider:
   name: aws
   runtime: nodejs12.x
