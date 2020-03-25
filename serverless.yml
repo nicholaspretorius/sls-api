@@ -86,6 +86,11 @@ provider:
       Action:
         - kms:Decrypt
       Resource: !GetAtt KMSKey.Arn
+    - Effect: Allow
+      Action:
+        - codedeploy:*
+      Resource:
+        - "*"
 
 functions:
   Auth:
@@ -108,6 +113,9 @@ functions:
           request:
             schema:
               application/json: ${file(models/createGroup.json)}
+    deploymentSettings:
+      type: Linear10PercentEvery1Minute
+      alias: Live
   GetImages:
     handler: src/lambda/http/getImages.handler
     events:
