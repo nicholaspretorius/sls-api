@@ -1,7 +1,11 @@
 import * as AWS from "aws-sdk";
+// import * as AWSXRay from "aws-xray-sdk";
+const AWSXRay = require('aws-xray-sdk');
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
 import { Group } from "./../models/Group";
+
+const XAWS = AWSXRay.captureAWS(AWS);
 
 export class GroupAccess {
 
@@ -11,13 +15,15 @@ export class GroupAccess {
     ) { }
 
     async getAllGroups(): Promise<Group[]> {
-        console.log("Getting all groups");
+        console.log("IS_OFFLINE? ", process.env.IS_OFFLINE);
 
         const result = await this.docClient.scan({
             TableName: this.groupsTable
         }).promise()
 
         const items = result.Items;
+
+        console.log("ITEMS: ", items);
         return items as Group[];
     }
 
@@ -37,11 +43,11 @@ function createDynamoDBClient() {
     if (process.env.IS_OFFLINE) {
         console.log("Creating LOCAL DynamoDB Client...");
 
-        return new AWS.DynamoDB.DocumentClient({
+        return new XAWS.DynamoDB.DocumentClient({
             region: "localhost",
             endpoint: "http://localhost:8000"
         });
     }
 
-    return new AWS.DynamoDB.DocumentClient();
+    return new XAWS.DynamoDB.DocumentClient();
 }

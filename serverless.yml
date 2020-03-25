@@ -32,6 +32,11 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
 
+  # enable X-Ray tracing for Lambda and X-Ray
+  tracing:
+    lambda: true
+    apiGateway: true
+
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   environment:

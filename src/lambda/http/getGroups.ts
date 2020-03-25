@@ -5,7 +5,7 @@ import { getAllGroups } from "./../../businessLogic/groups";
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     console.log("Processing Event: ", event);
 
-    const groups = getAllGroups();
+    const groups = await getAllGroups();
 
     return {
         statusCode: 200,
