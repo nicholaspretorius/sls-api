@@ -1,4 +1,4 @@
-import { SNSEvent, SNSHandler, S3EventRecord } from 'aws-lambda';
+import { SNSEvent, SNSHandler, S3Event, S3EventRecord } from 'aws-lambda';
 import "source-map-support";
 import * as AWS from "aws-sdk";
 import Jimp from "jimp/es";
@@ -17,7 +17,7 @@ export const handler: SNSHandler = async (event: SNSEvent) => {
         const s3EventStr = snsRecord.Sns.Message;
         console.log("Processing event: ", s3EventStr);
 
-        const s3Event = JSON.parse(s3EventStr);
+        const s3Event: S3Event = JSON.parse(s3EventStr);
 
         for (const record of s3Event.Records) {
             // "record" is an instance of S3EventRecord
