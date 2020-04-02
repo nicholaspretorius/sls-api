@@ -76,3 +76,16 @@ The technical process for uploading an images is as follows:
 
 `sls offline`
 
+* Install Serverless plugins: 
+
+`serverless plugin install --name serverless-plugin-tracing`
+
+{
+  "id": "1",
+  "userId": "1",
+  "createdAt": "2020-03-27T20:13:56.424Z",
+  "name": "Manual todo entry",
+  "dueDate": "2020-07-29T20:01:45.424Z",
+  "done": false,
+  "attachmentUrl": "http://example.com/image.png"
+}
