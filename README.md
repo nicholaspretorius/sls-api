@@ -30,6 +30,12 @@ Environments:
 * `sls deploy -v --stage staging`
 * `sls deploy -v --stage prod`
 
+### Removal
+
+* To remove your resources use: 
+
+`sls remove`
+
 ### AWS
 
 Default region is "us-east-1".
