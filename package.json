@@ -21,7 +21,7 @@
     "@types/elasticsearch": "^5.0.32",
     "@types/jsonwebtoken": "^8.3.2",
     "@types/node": "^10.12.18",
-    "aws-sdk": "^2.641.0",
+    "aws-sdk": "^2.814.0",
     "fork-ts-checker-webpack-plugin": "^3.0.1",
     "serverless-dynamodb-local": "^0.2.38",
     "serverless-offline": "^4.10.6",
